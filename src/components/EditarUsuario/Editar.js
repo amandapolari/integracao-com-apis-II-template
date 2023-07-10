@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
@@ -20,21 +21,19 @@ export const EditarUsuario = (props) => {
     const [name, setName] = useState('');
     const [editar, setEditar] = useState(false);
 
-    const getDadosUsuario = () => {
-        axios
-            .get(`${BASE_URL}/${props.id}`, {
+    const getDadosUsuario = async () => {
+        try {
+            const resp = await axios.get(`${BASE_URL}/${props.id}`, {
                 headers: {
                     Authorization: AUTH_TOKEN,
                 },
-            })
-            .then((res) => {
-                setUsuario(res.data);
-                setEmail(res.data.email);
-                setName(res.data.name);
-            })
-            .catch((err) => {
-                console.log(err.response);
             });
+            setUsuario(resp.data);
+            setEmail(resp.data.email);
+            setName(resp.data.name);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     useEffect(() => {
