@@ -40,21 +40,22 @@ export const EditarUsuario = (props) => {
         getDadosUsuario();
     }, []);
 
-    const editaUsuario = () => {
-        const body = {
-            name,
-            email,
-        };
-        axios
-            .put(`${BASE_URL}/${usuario.id}`, body, {
+    const editaUsuario = async () => {
+        try {
+            const body = {
+                name,
+                email,
+            };
+            await axios.put(`${BASE_URL}/${usuario.id}`, body, {
                 headers: {
                     Authorization: AUTH_TOKEN,
                 },
-            })
-            .then(() => {
-                getDadosUsuario();
-                setEditar(!editar);
             });
+            getDadosUsuario();
+            setEditar(!editar);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const deletarUsuario = () => {

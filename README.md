@@ -71,3 +71,56 @@ No template, altere a requisição getDadosUsuario para utilizar async/await jun
 ---
 
 ## 2 Prática 2
+
+### Enunciado
+
+Agora altere também a requisição `editaUsuario` para utilizar `async/await` juntamente `try/catch`.
+
+### Resolução
+
+-   Antes -> Com `then e catch`:
+
+    ```
+    const editaUsuario = () => {
+            const body = {
+                name,
+                email,
+            };
+            axios
+                .put(`${BASE_URL}/${usuario.id}`, body, {
+                    headers: {
+                        Authorization: AUTH_TOKEN,
+                    },
+                })
+                .then(() => {
+                    getDadosUsuario();
+                    setEditar(!editar);
+                });
+        };
+    ```
+
+-   Depois -> Com `try e catch`:
+
+    ```
+    const editaUsuario = async () => {
+            try {
+                const body = {
+                    name,
+                    email,
+                };
+                await axios.put(`${BASE_URL}/${usuario.id}`, body, {
+                    headers: {
+                        Authorization: AUTH_TOKEN,
+                    },
+                });
+                getDadosUsuario();
+                setEditar(!editar);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+    ```
+
+-   Diferenças e Observações:
+
+-   Nesse caso, o `axios` não me retornar nenhum `dado`, ele só faz uma edição e armazena, por isso, eu não preciso de uma variável.
