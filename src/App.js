@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { EditarUsuario } from './components/EditarUsuario/Editar';
@@ -23,6 +24,10 @@ function App() {
         getUsuarios();
     }, []);
 
+    useEffect(() => {
+        pesquisaUsuario(pesquisa);
+    }, [pesquisa]);
+
     const getUsuarios = () => {
         axios
             .get(BASE_URL, {
@@ -38,7 +43,21 @@ function App() {
             });
     };
 
-    const pesquisaUsuario = (pesquisa) => {};
+    const pesquisaUsuario = async (pesquisa) => {
+        try {
+            const resp = await axios.get(
+                `${BASE_URL}/search?name=${pesquisa.nome}&email=${pesquisa.email}`,
+                {
+                    headers: {
+                        Authorization: AUTH_TOKEN,
+                    },
+                }
+            );
+            resp.data.length ? setUsuarios(resp.data) : getUsuarios();
+        } catch (error) {
+            console.log(error.response);
+        }
+    };
 
     const onChangeName = (e) => {
         setNome(e.target.value);

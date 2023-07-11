@@ -4,6 +4,7 @@
 
 -   [1. Prática 1](#1-prática-1)
 -   [2. Prática 2](#2-prática-2)
+-   [3. Prática 3](#3-prática-3)
 
 ## 1 Prática 1
 
@@ -68,7 +69,6 @@ No template, altere a requisição getDadosUsuario para utilizar async/await jun
     -   Antes com `then e catch` eu fazia a requisição primeiro e depois usava o then e catch, usando o `try e catch` eu coloco a requisição dentro do `try`;
     -   Além disso preciso armazenar a resposta do `try` dentro de uma variável;
 
----
 
 ## 2 Prática 2
 
@@ -124,3 +124,49 @@ Agora altere também a requisição `editaUsuario` para utilizar `async/await` j
 -   Diferenças e Observações:
 
 -   Nesse caso, o `axios` não me retornar nenhum `dado`, ele só faz uma edição e armazena, por isso, eu não preciso de uma variável.
+
+## 3 Prática 3
+
+### Enunciado
+
+Implemente a requisição de pesquisar usuários na função `pesquisaUsuario` usando a sintaxe `async/await` junto com `try/catch`.
+
+### Resolução
+
+-   Antes:
+
+    ```
+    const pesquisaUsuario = (pesquisa) => {};
+    ```
+
+-   Depois -> Com `try e catch`:
+
+    ```
+    const pesquisaUsuario = async (pesquisa) => {
+        try {
+            const resp = await axios.get(
+                `${BASE_URL}/search?name=${pesquisa.nome}&email=${pesquisa.email}`,
+                {
+                    headers: {
+                        Authorization: AUTH_TOKEN,
+                    },
+                }
+            );
+            resp.data.length ? setUsuarios(resp.data) : getUsuarios();
+        } catch (error) {
+            console.log(error.response);
+        }
+    };
+    ```
+
+    Nesse caso também é preciso um `useEffect` para acompanhar as mudanças e chamar a função quando for preciso:
+
+    ```
+    useEffect(() => {
+        pesquisaUsuario(pesquisa);
+    }, [pesquisa]);
+    ```
+
+-   Diferenças e Observações:
+
+    -   Diferente da função da prática anterior, essa requisição vai retornar algo, então eu preciso armazenar os dados retornados em uma variável
